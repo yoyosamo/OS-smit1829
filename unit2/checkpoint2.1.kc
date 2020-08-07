@@ -12,7 +12,7 @@ const char BLACK = 0;
 const char WHITE = 1;
 
 //The text to display
-char[] MESSAGE = "Checkpoint 2.1 by smit1829";
+char[] MESSAGE = "checkpoint 2.1 by smit1829";
 
 void main(){
   //Init screen memory and font
