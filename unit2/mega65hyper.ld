@@ -1,5 +1,5 @@
 .file [name="%0.bin", type="bin", segments="XMega65Bin"]
-.segmentdef Xmega65Bin [segments="Syscall, Code, Data, Stack, Zeropage"]
+.segmentdef XMega65Bin [segments="Syscall, Code, Data, Stack, Zeropage"]
 .segmentdef Syscall [start=$8000, max=$81ff]
 .segmentdef Code [start=$8200, min=$8200, max=$bdff]
 .segmentdef Data [startAfter="Code", min=$8200, max=$bdff]
