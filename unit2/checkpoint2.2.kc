@@ -126,7 +126,7 @@ export struct SysCall[] SYSCALLS= {
   {JMP, &syscall61, NOP},
   {JMP, &syscall62, NOP},
   {JMP, &syscall63, NOP},
-  {JMP, &syscall64, NOP},
+  {JMP, &syscall64, NOP}
 
 };
 
@@ -179,6 +179,6 @@ export  align(0x100) struct SysCall[] TRAPS = {
   {JMP, &main, NOP},
   {JMP, &main, NOP},
   {JMP, &main, NOP},
-  {JMP, &main, NOP},
+  {JMP, &main, NOP}
 };
 
