@@ -38,6 +38,11 @@ void main(){
   }
 }
 
+//Trigger the system to exit hypervisor mode
+void exit_hypervisor(){
+  *(unsigned char *)$D67F = $01;
+}
+
 //SYSCALL Handlers to display a character
 void syscall1(){
   *(SCREEN+79) = ')';
@@ -296,6 +301,40 @@ void syscall64(){
   
 }
 
+//The Trap Functions
+//Power-on/reset entry point
+void reset(){
+  
+}
+//Page fault entry point
+void pagfault(){
+
+}
+//Restore-key long press trap entry point
+void restorkey(){
+
+}
+//Alt+Tab trap entry point
+void alttabkey(){
+
+}
+//F011 virtualised disk read trap entry point
+void VF011RD(){
+
+}
+//F011 virtualised disk write trap entry point
+void VF011WR(){
+
+}
+//Trap function for all undefined traps
+void reserved_trap(){
+
+}
+//KIL instruction in 6502-mode trap entry point
+void CPUKIL(){
+
+}
+
 //Select the SYSCALL segment
 #pragma data_seg(Syscall)
 
@@ -379,55 +418,73 @@ export struct SysCall[] SYSCALLS= {
 
 };
 
-export  align(0x100) struct SysCall[] TRAPS = {
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP},
-  {JMP, &main, NOP}
+//Create traps
+
+struct SysCall[] TRAPS = {
+  {JMP, &reset, NOP},
+  {JMP, &pagfault, NOP},
+  {JMP, &restorkey, NOP},
+  {JMP, &alttabkey, NOP},
+  {JMP, &VF011RD, NOP},
+  {JMP, &VF011WR, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &CPUKIL, NOP}
 };
 
