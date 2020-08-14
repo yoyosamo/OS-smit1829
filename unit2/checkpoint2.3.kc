@@ -39,7 +39,7 @@ void main(){
 }
 
 //Trigger the system to exit hypervisor mode
-void exit_hypervisor(){
+void 	exit_hypervisor(){
   *(unsigned char *)$D67F = $01;
 }
 
@@ -54,285 +54,285 @@ void syscall2(){
 
 //The rest of the SYSCALL handler functions
 void syscall3(){
-
+	exit_hypervisor();
 }
 
 void syscall4(){
-  
+	exit_hypervisor();
 }
 
 void syscall5(){
-  
+	exit_hypervisor();
 }
 
 void syscall6(){
-  
+	exit_hypervisor();
 }
 
 void syscall7(){
-  
+  exit_hypervisor();
 }
 
 void syscall8(){
-  
+	exit_hypervisor();
 }
 
 void syscall9(){
-  
+	exit_hypervisor();
 }
 
 void syscall10(){
-
+	exit_hypervisor();
 }
 
 void securentr(){
-
+	exit_hypervisor();
 }
 
 void securexit(){
-
+	exit_hypervisor();
 }
 
 void syscall13(){
-
+	exit_hypervisor();
 }
 
 void syscall14(){
-
+	exit_hypervisor();
 }
 
 void syscall15(){
-  
+	exit_hypervisor();
 }
 
 void syscall16(){
-
+	exit_hypervisor();
 }
 
 void syscall17(){
-
+	exit_hypervisor();
 }
 
 void syscall18(){
-
+	exit_hypervisor();
 }
 
 void syscall19(){
-
+	exit_hypervisor();
 }
 
 void syscall20(){
-
+	exit_hypervisor();
 }
 
 void syscall21(){
-
+	exit_hypervisor();
 }
 
 void syscall22(){
-
+	exit_hypervisor();
 }
 
 void syscall23(){
-
+	exit_hypervisor();
 }
 
 void syscall24(){
-
+	exit_hypervisor();
 }
 
 void syscall25(){
-
+	exit_hypervisor();
 }
 
 void syscall26(){
-
+	exit_hypervisor();
 }
 
 void syscall27(){
-
+	exit_hypervisor();
 }
 
 void syscall28(){
-
+	exit_hypervisor();
 }
 
 void syscall29(){
-
+	exit_hypervisor();
 }
 
 void syscall30(){
-
+	exit_hypervisor();
 }
 
 void syscall31(){
-
+	exit_hypervisor();
 }
 
 void syscall32(){
-
+	exit_hypervisor();
 }
 
 void syscall33(){
-
+	exit_hypervisor();
 }
 
 void syscall34(){
-
+	exit_hypervisor();
 }
 
 void syscall35(){
-  
+	exit_hypervisor();
 }
 
 void syscall36(){
-
+	exit_hypervisor();
 }
 
 void syscall37(){
-
+	exit_hypervisor();
 }
 
 void syscall38(){
-
+	exit_hypervisor();
 }
 
 void syscall39(){
-
+	exit_hypervisor();
 }
 
 void syscall40(){
-
+	exit_hypervisor();
 }
 
 void syscall41(){
-
+	exit_hypervisor();
 }
 
 void syscall42(){
-
+	exit_hypervisor();
 }
 
 void syscall43(){
-
+	exit_hypervisor();
 }
 
 void syscall44(){
-
+	exit_hypervisor();
 }
 
 void syscall45(){
-
+	exit_hypervisor();
 }
 
 void syscall46(){
-
+	exit_hypervisor();
 }
 
 void syscall47(){
-
+	exit_hypervisor();
 }
 
 void syscall48(){
-
+	exit_hypervisor();
 }
 
 void syscall49(){
-
+	exit_hypervisor();
 }
 
 void syscall50(){
-
+	exit_hypervisor();
 }
 
 void syscall51(){
-
+	exit_hypervisor();
 }
 
 void syscall52(){
-
+	exit_hypervisor();
 }
 
 void syscall53(){
-
+	exit_hypervisor();
 }
 
 void syscall54(){
-
+	exit_hypervisor();
 }
 
 void syscall55(){
-
+	exit_hypervisor();
 }
 
 void syscall56(){
-
+	exit_hypervisor();
 }
 
 void syscall57(){
-
+	exit_hypervisor();
 }
 
 void syscall58(){
-
+	exit_hypervisor();
 }
 
 void syscall59(){
-
+	exit_hypervisor();
 }
 
 void syscall60(){
-
+	exit_hypervisor();
 }
 
 void syscall61(){
-
+	exit_hypervisor();
 }
 
 void syscall62(){
-
+	exit_hypervisor();
 }
 
 void syscall63(){
-
+	exit_hypervisor();
 }
 
 void syscall64(){
-  
+	exit_hypervisor();
 }
 
 //The Trap Functions
 //Power-on/reset entry point
 void reset(){
-  
+	exit_hypervisor();
 }
 //Page fault entry point
 void pagfault(){
-
+	exit_hypervisor();
 }
 //Restore-key long press trap entry point
 void restorkey(){
-
+	exit_hypervisor();
 }
 //Alt+Tab trap entry point
 void alttabkey(){
-
+	exit_hypervisor();
 }
 //F011 virtualised disk read trap entry point
 void VF011RD(){
-
+	exit_hypervisor();
 }
 //F011 virtualised disk write trap entry point
 void VF011WR(){
-
+	exit_hypervisor();
 }
 //Trap function for all undefined traps
 void reserved_trap(){
-
+	exit_hypervisor();
 }
 //KIL instruction in 6502-mode trap entry point
 void CPUKIL(){
-
+	exit_hypervisor();
 }
 
 //Select the SYSCALL segment
