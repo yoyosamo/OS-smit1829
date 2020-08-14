@@ -64,6 +64,10 @@ pagfault: {
 //The Trap Functions
 //Power-on/reset entry point
 reset: {
+    jsr myProgram
+    rts
+}
+myProgram: {
     .label sc = 4
     .label msg = 2
     //Init screen memory and font

@@ -18,6 +18,30 @@ void main(){
   //Leave this here becasue KickC is weird
 }
 
+void myProgram(){
+  //Init screen memory and font
+  *VIC_MEMORY = 0x14;
+  //Fill the screen with spaces
+  memset(SCREEN, ' ', 40*25);
+  //Set the colour of every char to white
+  memset(COLS, WHITE, 40*25);
+  //Print the message
+  char* sc = SCREEN+40; //Start one line down
+  char* msg = MESSAGE;
+  //Routine to copy the string
+  while(*msg){
+    *sc++ = *msg++;
+  }
+  //Loop forever, showing 2 white lines
+  while(true){
+    if(*RASTER==54 || *RASTER==66){
+      *BGCOL = WHITE;
+    } else {
+      *BGCOL = BLACK;
+    }
+  }
+}
+
 //Trigger the system to exit hypervisor mode
 void 	exit_hypervisor(){
   *(unsigned char *)$D67F = $01;
@@ -284,27 +308,7 @@ void syscall64(){
 //The Trap Functions
 //Power-on/reset entry point
 void reset(){
-	//Init screen memory and font
-  *VIC_MEMORY = 0x14;
-  //Fill the screen with spaces
-  memset(SCREEN, ' ', 40*25);
-  //Set the colour of every char to white
-  memset(COLS, WHITE, 40*25);
-  //Print the message
-  char* sc = SCREEN+40; //Start one line down
-  char* msg = MESSAGE;
-  //Routine to copy the string
-  while(*msg){
-    *sc++ = *msg++;
-  }
-  //Loop forever, showing 2 white lines
-  while(true){
-    if(*RASTER==54 || *RASTER==66){
-      *BGCOL = WHITE;
-    } else {
-      *BGCOL = BLACK;
-    }
-  }
+	myProgram(); //Run whatever I made up there
 }
 //Page fault entry point
 void pagfault(){
