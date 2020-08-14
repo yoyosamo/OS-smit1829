@@ -12,30 +12,10 @@ const char BLACK = 0;
 const char WHITE = 1;
 
 //The text to display
-char[] MESSAGE = "checkpoint 2.2 by smit1829";
+char[] MESSAGE = "checkpoint 2.3 by smit1829";
 
 void main(){
-  //Init screen memory and font
-  *VIC_MEMORY = 0x14;
-  //Fill the screen with spaces
-  memset(SCREEN, ' ', 40*25);
-  //Set the colour of every char to white
-  memset(COLS, WHITE, 40*25);
-  //Print the message
-  char* sc = SCREEN+40; //Start one line down
-  char* msg = MESSAGE;
-  //Routine to copy the string
-  while(*msg){
-    *sc++ = *msg++;
-  }
-  //Loop forever, showing 2 white lines
-  while(true){
-    if(*RASTER==54 || *RASTER==66){
-      *BGCOL = WHITE;
-    } else {
-      *BGCOL = BLACK;
-    }
-  }
+  //Leave this here becasue KickC is weird
 }
 
 //Trigger the system to exit hypervisor mode
@@ -304,7 +284,27 @@ void syscall64(){
 //The Trap Functions
 //Power-on/reset entry point
 void reset(){
-	exit_hypervisor();
+	//Init screen memory and font
+  *VIC_MEMORY = 0x14;
+  //Fill the screen with spaces
+  memset(SCREEN, ' ', 40*25);
+  //Set the colour of every char to white
+  memset(COLS, WHITE, 40*25);
+  //Print the message
+  char* sc = SCREEN+40; //Start one line down
+  char* msg = MESSAGE;
+  //Routine to copy the string
+  while(*msg){
+    *sc++ = *msg++;
+  }
+  //Loop forever, showing 2 white lines
+  while(true){
+    if(*RASTER==54 || *RASTER==66){
+      *BGCOL = WHITE;
+    } else {
+      *BGCOL = BLACK;
+    }
+  }
 }
 //Page fault entry point
 void pagfault(){
@@ -420,14 +420,13 @@ export struct SysCall[] SYSCALLS= {
 
 //Create traps
 
-struct SysCall[] TRAPS = {
+export  align(0x100) struct SysCall[] TRAPS = {
   {JMP, &reset, NOP},
   {JMP, &pagfault, NOP},
   {JMP, &restorkey, NOP},
   {JMP, &alttabkey, NOP},
   {JMP, &VF011RD, NOP},
   {JMP, &VF011WR, NOP},
-  {JMP, &reserved_trap, NOP},
   {JMP, &reserved_trap, NOP},
   {JMP, &reserved_trap, NOP},
   {JMP, &reserved_trap, NOP},
