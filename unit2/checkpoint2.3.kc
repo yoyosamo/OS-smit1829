@@ -1,0 +1,184 @@
+import "string"
+
+#pragma link("mega65hyper.ld")
+
+//Definitions
+const char* RASTER = 0xd012;
+const char* VIC_MEMORY = 0xd018;
+const char* SCREEN = 0x0400;
+const char* BGCOL = 0xd021;
+const char* COLS = 0xd800;
+const char BLACK = 0;
+const char WHITE = 1;
+
+//The text to display
+char[] MESSAGE = "checkpoint 2.2 by smit1829";
+
+void main(){
+  //Init screen memory and font
+  *VIC_MEMORY = 0x14;
+  //Fill the screen with spaces
+  memset(SCREEN, ' ', 40*25);
+  //Set the colour of every char to white
+  memset(COLS, WHITE, 40*25);
+  //Print the message
+  char* sc = SCREEN+40; //Start one line down
+  char* msg = MESSAGE;
+  //Routine to copy the string
+  while(*msg){
+    *sc++ = *msg++;
+  }
+  //Loop forever, showing 2 white lines
+  while(true){
+    if(*RASTER==54 || *RASTER==66){
+      *BGCOL = WHITE;
+    } else {
+      *BGCOL = BLACK;
+    }
+  }
+}
+
+//SYSCALL Handlers to display a character
+void syscall1(){
+  *(SCREEN+79) = ')';
+}
+
+void syscall2(){
+  *(SCREEN+78) = '(';
+}
+
+//Select the SYSCALL segment
+#pragma data_seg(Syscall)
+
+//Struct for the syscall
+struct SysCall{
+  char xjmp;
+  void()* syscall;
+  char xnop;
+};
+
+//Define consts
+const char JMP = 0x4c;
+const char NOP = 0xea;
+
+//Fill in struct
+export struct SysCall[] SYSCALLS= {
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall2, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall1, NOP}
+
+};
+
+export  align(0x100) struct SysCall[] TRAPS = {
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP},
+  {JMP, &main, NOP}
+};
+
