@@ -86,7 +86,6 @@ void test_memory(){
   //Print the test results
   print_to_screen("memory found at $");
   print_hex((unsigned short)mem_start);
-  print_newline();
   print_to_screen(" - $");
   print_hex((unsigned short)mem_end);
   print_newline();
