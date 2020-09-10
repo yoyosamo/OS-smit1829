@@ -9,10 +9,10 @@
   .label SCREEN = $400
   .label COLS = $d800
   .const WHITE = 1
+  .label current_screen_line = $400
   //Define consts
   .const JMP = $4c
   .const NOP = $ea
-  .label current_screen_line = 2
 .segment Code
 main: {
     rts
@@ -91,14 +91,10 @@ myProgram: {
     jsr print_to_screen
     rts
 }
-// print_to_screen(byte* zeropage(4) message)
+// print_to_screen(byte* zeropage(2) message)
 print_to_screen: {
-    .label message = 4
+    .label message = 2
     ldx #0
-    lda #<$400
-    sta.z current_screen_line
-    lda #>$400
-    sta.z current_screen_line+1
     lda #<MESSAGE
     sta.z message
     lda #>MESSAGE
@@ -110,15 +106,9 @@ print_to_screen: {
     bne __b2
     rts
   __b2:
-    stx.z $ff
     ldy #0
     lda (message),y
-    ldy.z $ff
-    sta (current_screen_line),y
-    inc.z current_screen_line
-    bne !+
-    inc.z current_screen_line+1
-  !:
+    sta current_screen_line,x
     inx
     inc.z message
     bne !+
@@ -127,12 +117,12 @@ print_to_screen: {
     jmp __b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(6) str, byte register(X) c, word zeropage(4) num)
+// memset(void* zeropage(4) str, byte register(X) c, word zeropage(2) num)
 memset: {
-    .label end = 4
-    .label dst = 6
-    .label num = 4
-    .label str = 6
+    .label end = 2
+    .label dst = 4
+    .label num = 2
+    .label str = 4
     lda.z num
     bne !+
     lda.z num+1
