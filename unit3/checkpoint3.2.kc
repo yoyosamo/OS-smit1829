@@ -14,6 +14,9 @@ const char WHITE = 1;
 unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
+unsigned short mem_start = $0800;
+unsigned short mem_end = $8000; 
+
 //The text to display
 char[] MESSAGE = "checkpoint 3.1 by smit1829";
 
@@ -32,6 +35,63 @@ void print_newline(){
   current_screen_line+=40;
   //Reset the X
   current_screen_x = 0;
+
+}
+
+void print_hex(unsigned short value){
+  char [5] hex;
+  unsigned char i;
+  for(i=0; i<4; i++){
+    if(value<0xa000) hex[i]='0'+(char) (value>>12);
+    else hex[i]=(char) (value>>12)-9;
+    value<<=4;
+  }
+  hex[4]=0;
+  print_to_screen(hex);
+}
+
+void test_memory(){
+  //Assumes its okay to start
+  bool okay = true;
+  //Keep track of where we are in memory
+  volatile unsigned char *mem;
+
+  //Keep track of the memory
+  volatile unsigned char q;
+
+  //Loop through all memory, while we're still okay
+  for(mem = mem_start; mem < mem_end && okay; mem++){
+    //For each memory location, set 0-254
+    for(q = 0; q < 255; q++){
+      //Set this location to this value
+      *mem = q;
+
+      //Check if it's right
+      //If it doesn't match the expected
+      if(*loc != q){
+        //Print the error
+        print_to_screen("memory error at $");
+        print_hex((unsigned short)mem);
+        print_newline();
+        //Set us to not okay
+        okay = false;
+        break;
+      }
+    }
+  }
+
+  //Set the end of memory
+  mem_end = mem;
+
+  //Print the test results
+  print_to_screen("memory found at $");
+  print_hex((unsigned short)mem_start);
+  print_newline();
+  print_to_screen(" - $");
+  print_hex((unsigned short)mem_end);
+  print_newline();
+
+
 
 }
 
