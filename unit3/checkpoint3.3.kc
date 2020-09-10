@@ -1,0 +1,570 @@
+import "string"
+
+#pragma link("mega65hyper.ld")
+
+//Definitions
+const char* RASTER = 0xd012;
+const char* VIC_MEMORY = 0xd018;
+const char* SCREEN = 0x0400;
+const char* BGCOL = 0xd021;
+const char* COLS = 0xd800;
+const char BLACK = 0;
+const char WHITE = 1;
+
+unsigned char *current_screen_line = $0400;
+unsigned char current_screen_x = 0;
+
+unsigned short mem_start = $0800;
+unsigned short mem_end = $8000; 
+
+//The text to display
+char[] MESSAGE = "checkpoint 3.1 by smit1829";
+
+void main(){
+  //Leave this here becasue KickC is weird
+}
+
+void print_to_screen(char *message){
+  while(*message){
+    *(current_screen_line + current_screen_x++) = *message++;
+  }
+}
+
+void print_newline(){
+  //Add 40 chars, for a new line
+  current_screen_line+=40;
+  //Reset the X
+  current_screen_x = 0;
+
+}
+
+void print_hex(unsigned short value){
+  char [5] hex;
+  unsigned char i;
+  for(i=0; i<4; i++){
+    if(value<0xa000) hex[i]='0'+(char) (value>>12);
+    else hex[i]=(char) (value>>12)-9;
+    value<<=4;
+  }
+  hex[4]=0;
+  print_to_screen(hex);
+}
+
+void test_memory(){
+  //Assumes its okay to start
+  bool okay = true;
+  //Keep track of where we are in memory
+  volatile unsigned char *mem;
+
+  //Keep track of the memory
+  volatile unsigned char q;
+
+  //Loop through all memory, while we're still okay
+  for(mem = mem_start; mem < mem_end && okay; mem++){
+    //For each memory location, set 0-254
+    for(q = 0; q < 255; q++){
+      //Set this location to this value
+      *mem = q;
+
+      //Check if it's right
+      //If it doesn't match the expected
+      if(*mem != q){
+        //Print the error
+        print_to_screen("memory error at $");
+        print_hex((unsigned short)mem);
+        print_newline();
+        //Set us to not okay
+        okay = false;
+        break;
+      }
+    }
+  }
+
+  //Set the end of memory
+  mem_end = (unsigned short)mem;
+
+  //Print the test results
+  print_to_screen("memory found at $");
+  print_hex((unsigned short)mem_start);
+  print_to_screen(" - $");
+  print_hex((unsigned short)mem_end);
+  print_newline();
+
+
+
+}
+
+void myProgram(){
+  //Init screen memory and font
+  *VIC_MEMORY = 0x14;
+  //Fill the screen with spaces
+  memset(SCREEN, ' ', 40*25);
+  //Set the colour of every char to white
+  memset(COLS, WHITE, 40*25);
+
+  //Print the message
+  print_to_screen("smit1829 operating system starting...");
+  print_newline();
+  print_to_screen("testing hardware");
+  print_newline();
+
+  //Run the memory test
+  test_memory();
+
+  print_to_screen("hardware test complete");
+
+
+  while(true) continue; //Keep running, so we can see the message
+
+  
+}
+
+//Trigger the system to exit hypervisor mode
+void 	exit_hypervisor(){
+  *(unsigned char *)$D67F = $01;
+}
+
+//SYSCALL Handlers to display a character
+void syscall1(){
+  *(SCREEN+79) = ')';
+}
+
+void syscall2(){
+  *(SCREEN+78) = '(';
+}
+
+//The rest of the SYSCALL handler functions
+void syscall3(){
+	exit_hypervisor();
+}
+
+void syscall4(){
+	exit_hypervisor();
+}
+
+void syscall5(){
+	exit_hypervisor();
+}
+
+void syscall6(){
+	exit_hypervisor();
+}
+
+void syscall7(){
+  exit_hypervisor();
+}
+
+void syscall8(){
+	exit_hypervisor();
+}
+
+void syscall9(){
+	exit_hypervisor();
+}
+
+void syscall10(){
+	exit_hypervisor();
+}
+
+void securentr(){
+	exit_hypervisor();
+}
+
+void securexit(){
+	exit_hypervisor();
+}
+
+void syscall13(){
+	exit_hypervisor();
+}
+
+void syscall14(){
+	exit_hypervisor();
+}
+
+void syscall15(){
+	exit_hypervisor();
+}
+
+void syscall16(){
+	exit_hypervisor();
+}
+
+void syscall17(){
+	exit_hypervisor();
+}
+
+void syscall18(){
+	exit_hypervisor();
+}
+
+void syscall19(){
+	exit_hypervisor();
+}
+
+void syscall20(){
+	exit_hypervisor();
+}
+
+void syscall21(){
+	exit_hypervisor();
+}
+
+void syscall22(){
+	exit_hypervisor();
+}
+
+void syscall23(){
+	exit_hypervisor();
+}
+
+void syscall24(){
+	exit_hypervisor();
+}
+
+void syscall25(){
+	exit_hypervisor();
+}
+
+void syscall26(){
+	exit_hypervisor();
+}
+
+void syscall27(){
+	exit_hypervisor();
+}
+
+void syscall28(){
+	exit_hypervisor();
+}
+
+void syscall29(){
+	exit_hypervisor();
+}
+
+void syscall30(){
+	exit_hypervisor();
+}
+
+void syscall31(){
+	exit_hypervisor();
+}
+
+void syscall32(){
+	exit_hypervisor();
+}
+
+void syscall33(){
+	exit_hypervisor();
+}
+
+void syscall34(){
+	exit_hypervisor();
+}
+
+void syscall35(){
+	exit_hypervisor();
+}
+
+void syscall36(){
+	exit_hypervisor();
+}
+
+void syscall37(){
+	exit_hypervisor();
+}
+
+void syscall38(){
+	exit_hypervisor();
+}
+
+void syscall39(){
+	exit_hypervisor();
+}
+
+void syscall40(){
+	exit_hypervisor();
+}
+
+void syscall41(){
+	exit_hypervisor();
+}
+
+void syscall42(){
+	exit_hypervisor();
+}
+
+void syscall43(){
+	exit_hypervisor();
+}
+
+void syscall44(){
+	exit_hypervisor();
+}
+
+void syscall45(){
+	exit_hypervisor();
+}
+
+void syscall46(){
+	exit_hypervisor();
+}
+
+void syscall47(){
+	exit_hypervisor();
+}
+
+void syscall48(){
+	exit_hypervisor();
+}
+
+void syscall49(){
+	exit_hypervisor();
+}
+
+void syscall50(){
+	exit_hypervisor();
+}
+
+void syscall51(){
+	exit_hypervisor();
+}
+
+void syscall52(){
+	exit_hypervisor();
+}
+
+void syscall53(){
+	exit_hypervisor();
+}
+
+void syscall54(){
+	exit_hypervisor();
+}
+
+void syscall55(){
+	exit_hypervisor();
+}
+
+void syscall56(){
+	exit_hypervisor();
+}
+
+void syscall57(){
+	exit_hypervisor();
+}
+
+void syscall58(){
+	exit_hypervisor();
+}
+
+void syscall59(){
+	exit_hypervisor();
+}
+
+void syscall60(){
+	exit_hypervisor();
+}
+
+void syscall61(){
+	exit_hypervisor();
+}
+
+void syscall62(){
+	exit_hypervisor();
+}
+
+void syscall63(){
+	exit_hypervisor();
+}
+
+void syscall64(){
+	exit_hypervisor();
+}
+
+//The Trap Functions
+//Power-on/reset entry point
+void reset(){
+	myProgram(); //Run whatever I made up there
+}
+//Page fault entry point
+void pagfault(){
+	exit_hypervisor();
+}
+//Restore-key long press trap entry point
+void restorkey(){
+	exit_hypervisor();
+}
+//Alt+Tab trap entry point
+void alttabkey(){
+	exit_hypervisor();
+}
+//F011 virtualised disk read trap entry point
+void VF011RD(){
+	exit_hypervisor();
+}
+//F011 virtualised disk write trap entry point
+void VF011WR(){
+	exit_hypervisor();
+}
+//Trap function for all undefined traps
+void reserved_trap(){
+	exit_hypervisor();
+}
+//KIL instruction in 6502-mode trap entry point
+void CPUKIL(){
+	exit_hypervisor();
+}
+
+//Select the SYSCALL segment
+#pragma data_seg(Syscall)
+
+//Struct for the syscall
+struct SysCall{
+  char xjmp;
+  void()* syscall;
+  char xnop;
+};
+
+//Define consts
+const char JMP = 0x4c;
+const char NOP = 0xea;
+
+//Fill in struct
+export struct SysCall[] SYSCALLS= {
+  {JMP, &syscall1, NOP},
+  {JMP, &syscall2, NOP},
+  {JMP, &syscall3, NOP},
+  {JMP, &syscall4, NOP},
+  {JMP, &syscall5, NOP},
+  {JMP, &syscall6, NOP},
+  {JMP, &syscall7, NOP},
+  {JMP, &syscall8, NOP},
+  {JMP, &syscall9, NOP},
+  {JMP, &syscall10, NOP},
+  {JMP, &securentr, NOP},
+  {JMP, &securexit, NOP},
+  {JMP, &syscall13, NOP},
+  {JMP, &syscall14, NOP},
+  {JMP, &syscall15, NOP},
+  {JMP, &syscall16, NOP},
+  {JMP, &syscall17, NOP},
+  {JMP, &syscall18, NOP},
+  {JMP, &syscall19, NOP},
+  {JMP, &syscall20, NOP},
+  {JMP, &syscall21, NOP},
+  {JMP, &syscall22, NOP},
+  {JMP, &syscall23, NOP},
+  {JMP, &syscall24, NOP},
+  {JMP, &syscall25, NOP},
+  {JMP, &syscall26, NOP},
+  {JMP, &syscall27, NOP},
+  {JMP, &syscall28, NOP},
+  {JMP, &syscall29, NOP},
+  {JMP, &syscall30, NOP},
+  {JMP, &syscall31, NOP},
+  {JMP, &syscall32, NOP},
+  {JMP, &syscall33, NOP},
+  {JMP, &syscall34, NOP},
+  {JMP, &syscall35, NOP},
+  {JMP, &syscall36, NOP},
+  {JMP, &syscall37, NOP},
+  {JMP, &syscall38, NOP},
+  {JMP, &syscall39, NOP},
+  {JMP, &syscall40, NOP},
+  {JMP, &syscall41, NOP},
+  {JMP, &syscall42, NOP},
+  {JMP, &syscall43, NOP},
+  {JMP, &syscall44, NOP},
+  {JMP, &syscall45, NOP},
+  {JMP, &syscall46, NOP},
+  {JMP, &syscall47, NOP},
+  {JMP, &syscall48, NOP},
+  {JMP, &syscall49, NOP},
+  {JMP, &syscall50, NOP},
+  {JMP, &syscall51, NOP},
+  {JMP, &syscall52, NOP},
+  {JMP, &syscall53, NOP},
+  {JMP, &syscall54, NOP},
+  {JMP, &syscall55, NOP},
+  {JMP, &syscall56, NOP},
+  {JMP, &syscall57, NOP},
+  {JMP, &syscall58, NOP},
+  {JMP, &syscall59, NOP},
+  {JMP, &syscall60, NOP},
+  {JMP, &syscall61, NOP},
+  {JMP, &syscall62, NOP},
+  {JMP, &syscall63, NOP},
+  {JMP, &syscall64, NOP}
+
+};
+
+//Create traps
+
+export  align(0x100) struct SysCall[] TRAPS = {
+  {JMP, &reset, NOP},
+  {JMP, &pagfault, NOP},
+  {JMP, &restorkey, NOP},
+  {JMP, &alttabkey, NOP},
+  {JMP, &VF011RD, NOP},
+  {JMP, &VF011WR, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &reserved_trap, NOP},
+  {JMP, &CPUKIL, NOP}
+};
+
