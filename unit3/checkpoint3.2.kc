@@ -81,7 +81,7 @@ void test_memory(){
   }
 
   //Set the end of memory
-  mem_end = mem;
+  mem_end = (unsigned short)mem;
 
   //Print the test results
   print_to_screen("memory found at $");
