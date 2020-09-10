@@ -62,9 +62,7 @@ pagfault: {
 //Power-on/reset entry point
 reset: {
     jsr myProgram
-  b1:
-  //Run whatever I made up there
-    jmp b1
+    rts
 }
 myProgram: {
     //Init screen memory and font
@@ -91,7 +89,8 @@ myProgram: {
     sta.z memset.num+1
     jsr memset
     jsr print_to_screen
-    rts
+  __b1:
+    jmp __b1
   .segment Data
     message: .text "foobar"
     .byte 0

@@ -6,7 +6,6 @@ al C:836c .syscall17
 al C:8100 .TRAPS
 al C:2 .num
 al C:8200 .main
-al C:8226 .b1
 al C:400 .SCREEN
 al C:82e8 .syscall50
 al C:82e4 .syscall51
@@ -56,7 +55,8 @@ al C:83a0 .syscall4
 al C:8350 .syscall24
 al C:83a4 .syscall3
 al C:8318 .syscall38
-al C:8266 .__b1
+al C:8259 .__b1__0
+al C:8266 .__b1__1
 al C:8314 .syscall39
 al C:4 .dst
 al C:8201 .CPUKIL
@@ -77,7 +77,7 @@ al C:82a2 .__b3
 al C:831c .syscall37
 al C:8328 .syscall34
 al C:8324 .syscall35
-al C:8229 .myProgram
+al C:8227 .myProgram
 al C:82ec .syscall49
 al C:d800 .COLS
 al C:2 .message__0
