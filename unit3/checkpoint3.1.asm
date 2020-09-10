@@ -62,7 +62,9 @@ pagfault: {
 //Power-on/reset entry point
 reset: {
     jsr myProgram
-    rts
+  b1:
+  //Run whatever I made up there
+    jmp b1
 }
 myProgram: {
     //Init screen memory and font
@@ -90,14 +92,18 @@ myProgram: {
     jsr memset
     jsr print_to_screen
     rts
+  .segment Data
+    message: .text "foobar"
+    .byte 0
 }
+.segment Code
 // print_to_screen(byte* zeropage(2) message)
 print_to_screen: {
     .label message = 2
     ldx #0
-    lda #<MESSAGE
+    lda #<myProgram.message
     sta.z message
-    lda #>MESSAGE
+    lda #>myProgram.message
     sta.z message+1
   __b1:
     ldy #0
@@ -414,10 +420,6 @@ syscall1: {
     sta SCREEN+$4f
     rts
 }
-.segment Data
-  //The text to display
-  MESSAGE: .text "checkpoint 2.3 by smit1829"
-  .byte 0
 .segment Syscall
   //Fill in struct
   SYSCALLS: .byte JMP

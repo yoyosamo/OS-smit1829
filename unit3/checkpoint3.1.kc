@@ -21,8 +21,6 @@ void main(){
   //Leave this here becasue KickC is weird
 }
 
-
-
 void print_to_screen(char *message){
   while(*message){
     *(current_screen_line + current_screen_x++) = *message++;
@@ -36,24 +34,11 @@ void myProgram(){
   memset(SCREEN, ' ', 40*25);
   //Set the colour of every char to white
   memset(COLS, WHITE, 40*25);
+
   //Print the message
-  //char* sc = SCREEN+40; //Start one line down
-  //char* msg = MESSAGE;
+  print_to_screen("foobar");
 
-  print_to_screen(MESSAGE);
-
-  //Routine to copy the string
-  //while(*msg){
-  //  *sc++ = *msg++;
-  //}
-  //Loop forever, showing 2 white lines
-  //while(true){
-  //  if(*RASTER==54 || *RASTER==66){
-  //    *BGCOL = WHITE;
-   // } else {
-   //   *BGCOL = BLACK;
-  //  }
-  //}
+  while(true) continue; //Keep running, so we can see the message
 
   
 }
