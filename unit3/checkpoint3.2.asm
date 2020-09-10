@@ -16,16 +16,13 @@
   .label current_screen_x = 4
   .label current_screen_line = 6
   .label mem_end = $d
-  .label current_screen_line_34 = 2
-  .label current_screen_line_49 = 2
+  .label current_screen_line_31 = 2
+  .label current_screen_line_57 = 2
+  .label current_screen_line_58 = 2
   .label current_screen_line_59 = 2
   .label current_screen_line_60 = 2
+  .label current_screen_line_61 = 2
   .label current_screen_line_62 = 2
-  .label current_screen_line_63 = 2
-  .label current_screen_line_64 = 2
-  .label current_screen_line_69 = 2
-  .label current_screen_line_70 = 2
-  .label current_screen_line_71 = 2
 .segment Code
 main: {
     rts
@@ -104,9 +101,9 @@ myProgram: {
     lda #0
     sta.z current_screen_x
     lda #<$400
-    sta.z current_screen_line_34
+    sta.z current_screen_line_31
     lda #>$400
-    sta.z current_screen_line_34+1
+    sta.z current_screen_line_31+1
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -118,9 +115,9 @@ myProgram: {
     sta.z current_screen_line+1
     jsr print_newline
     lda.z current_screen_line
-    sta.z current_screen_line_59
+    sta.z current_screen_line_57
     lda.z current_screen_line+1
-    sta.z current_screen_line_59+1
+    sta.z current_screen_line_57+1
     lda #0
     sta.z current_screen_x
     lda #<message1
@@ -131,9 +128,9 @@ myProgram: {
     jsr print_newline
     jsr test_memory
     lda.z current_screen_line
-    sta.z current_screen_line_60
+    sta.z current_screen_line_58
     lda.z current_screen_line+1
-    sta.z current_screen_line_60+1
+    sta.z current_screen_line_58+1
     lda #0
     sta.z current_screen_x
     lda #<message2
@@ -165,7 +162,7 @@ print_to_screen: {
     ldy #0
     lda (message),y
     ldy.z current_screen_x
-    sta (current_screen_line_34),y
+    sta (current_screen_line_31),y
     inc.z current_screen_x
     inc.z message
     bne !+
@@ -210,30 +207,23 @@ test_memory: {
     lda.z mem+1
     sta.z mem_end+1
     lda.z current_screen_line
-    sta.z current_screen_line_64
+    sta.z current_screen_line_62
     lda.z current_screen_line+1
-    sta.z current_screen_line_64+1
+    sta.z current_screen_line_62+1
     lda #<message
     sta.z print_to_screen.message
     lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
-    lda.z current_screen_line
-    sta.z current_screen_line_69
-    lda.z current_screen_line+1
-    sta.z current_screen_line_69+1
     lda #<mem_start
     sta.z print_hex.value
     lda #>mem_start
     sta.z print_hex.value+1
     jsr print_hex
-    jsr print_newline
     lda.z current_screen_line
-    sta.z current_screen_line_63
+    sta.z current_screen_line_61
     lda.z current_screen_line+1
-    sta.z current_screen_line_63+1
-    lda #0
-    sta.z current_screen_x
+    sta.z current_screen_line_61+1
     lda #<message1
     sta.z print_to_screen.message
     lda #>message1
@@ -243,10 +233,6 @@ test_memory: {
     sta.z print_hex.value
     lda.z mem_end+1
     sta.z print_hex.value+1
-    lda.z current_screen_line
-    sta.z current_screen_line_70
-    lda.z current_screen_line+1
-    sta.z current_screen_line_70+1
     jsr print_hex
     jsr print_newline
     rts
@@ -272,9 +258,9 @@ test_memory: {
     cmp (mem),y
     beq __b6
     lda.z current_screen_line
-    sta.z current_screen_line_62
+    sta.z current_screen_line_60
     lda.z current_screen_line+1
-    sta.z current_screen_line_62+1
+    sta.z current_screen_line_60+1
     lda #<message2
     sta.z print_to_screen.message
     lda #>message2
@@ -284,10 +270,6 @@ test_memory: {
     sta.z print_hex.value
     lda.z mem+1
     sta.z print_hex.value+1
-    lda.z current_screen_line
-    sta.z current_screen_line_71
-    lda.z current_screen_line+1
-    sta.z current_screen_line_71+1
     jsr print_hex
     jsr print_newline
     lda #0
@@ -328,6 +310,10 @@ print_hex: {
     bcc __b2
     lda #0
     sta hex+4
+    lda.z current_screen_line
+    sta.z current_screen_line_59
+    lda.z current_screen_line+1
+    sta.z current_screen_line_59+1
     lda #<hex
     sta.z print_to_screen.message
     lda #>hex
