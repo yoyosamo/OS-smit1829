@@ -107,6 +107,13 @@ void myProgram(){
   print_to_screen("smit1829 operating system starting...");
   print_newline();
   print_to_screen("testing hardware");
+  print_newline();
+
+  //Run the memory test
+  test_memory();
+
+  print_to_screen("hardware test complete");
+
 
   while(true) continue; //Keep running, so we can see the message
 
