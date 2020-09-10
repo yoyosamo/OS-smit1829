@@ -15,7 +15,7 @@ unsigned char *current_screen_line = $0400;
 unsigned char current_screen_x = 0;
 
 //The text to display
-char[] MESSAGE = "checkpoint 2.3 by smit1829";
+char[] MESSAGE = "checkpoint 3.1 by smit1829";
 
 void main(){
   //Leave this here becasue KickC is weird
@@ -40,7 +40,7 @@ void myProgram(){
   //char* sc = SCREEN+40; //Start one line down
   //char* msg = MESSAGE;
 
-
+  print_to_screen(MESSAGE);
 
   //Routine to copy the string
   //while(*msg){
@@ -55,7 +55,7 @@ void myProgram(){
   //  }
   //}
 
-  print_to_screen(MESSAGE);
+  
 }
 
 //Trigger the system to exit hypervisor mode
