@@ -27,6 +27,14 @@ void print_to_screen(char *message){
   }
 }
 
+void print_newline(){
+  //Add 40 chars, for a new line
+  current_screen_line+=40;
+  //Reset the X
+  current_screen_x = 0;
+
+}
+
 void myProgram(){
   //Init screen memory and font
   *VIC_MEMORY = 0x14;
@@ -36,7 +44,9 @@ void myProgram(){
   memset(COLS, WHITE, 40*25);
 
   //Print the message
-  print_to_screen("foobar");
+  print_to_screen("smit1829 operating system starting...");
+  print_newline();
+  print_to_screen("testing hardware");
 
   while(true) continue; //Keep running, so we can see the message
 
