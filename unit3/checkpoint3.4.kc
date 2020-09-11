@@ -61,6 +61,12 @@ void test_memory(){
 
   //Loop through all memory, while we're still okay
   for(mem = mem_start; mem < mem_end && okay; mem++){
+
+    //Show where we're up to
+    print_hex((unsigned short)mem);
+    current_screen_x=0;
+
+
     //For each memory location, set 0-254
     for(q = 0; q < 255; q++){
       //Set this location to this value
@@ -187,8 +193,17 @@ unsigned short detect_mos6526(unsigned short mem){
   //Check that it changes
   v1 = p[$09]+$01;
 
+  //Some feedbackto the user
+  print_to_screen("testing time...");
+  current_screen_x = 0; //It'll be overwritten
+
   //Wait a second
   for(int i = 0; i < 63; i++){
+    //Some more feedback to the user
+    print_to_screen("testing time...");
+    print_hex((unsigned short)i);
+    current_screen_x = 0; //It'll be overwritten
+
       for(int j = 0; j < 32000; j++){
         v2 = p[$09];
 
@@ -196,6 +211,7 @@ unsigned short detect_mos6526(unsigned short mem){
         return $100;
         }
       }
+      
   }
 
   //Worst case scenario
