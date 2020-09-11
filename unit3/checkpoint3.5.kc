@@ -171,8 +171,9 @@ void detect_devices(){
 
 
     //Run the vicii test
+    unsigned short vicii = detect_vicii(d);
     //If the test returns true
-    if(unsigned short vicii = detect_vicii(d)){
+    if(vicii > 0){
       //That must be right
       print_to_screen("vicii found");
       print_newline();
@@ -189,8 +190,9 @@ void detect_devices(){
     
 
     //Run the MOS6526 test
+     unsigned short mos6526 = detect_mos6526(d);
     //If the test returns true
-    if(unsigned short mos6526 = detect_mos6526(d)){
+    if(mos6526 > 0){
       //That must be right
       print_to_screen("mos6526 found");
       print_newline();
