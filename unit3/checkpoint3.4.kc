@@ -116,8 +116,17 @@ void detect_devices(){
       d = $DBFF;
     }
 
-    //Run the MOS6525 test
-    unsigned short mos6562 = detect_mos6562(d);
+    //Run the MOS6526 test
+    unsigned short mos6526 = detect_mos6526(d);
+    //If the test returns true
+    if(mos6526 > 0){
+      //That must be right
+      print_to_screen("mos6526 found at $");
+      print_hex((unsigned short)d);
+      print_newline();
+      //Advance by the size (-$10 because it adds that in the loop anyways)
+      d+=(mos6526 - $10);
+    }
 
 
   }
@@ -149,7 +158,7 @@ unsigned short detect_vicii(unsigned short mem){
 
 }
 
-unsigned short detect_mos6562(unsigned short mem){
+unsigned short detect_mos6526(unsigned short mem){
   volatile unsigned char *p = mem;
 
   unsigned char v1, v2;
@@ -169,13 +178,18 @@ unsigned short detect_mos6562(unsigned short mem){
   v1 = p[$09];
 
   //Wait a second
-  for(long i = 0; i < 2000000; i++){
-    v2 = p[$09];
+  for(int i = 0; i < 63; i++){
+      for(int j = 0; j < 32000; j++){
+        v2 = p[$09];
 
-    if(v1=v2){
-      return $100;
-    }
+        if(v1=v2){
+        return $100;
+        }
+      }
   }
+
+  //Worst case scenario
+  return 0;
 
 
 }
