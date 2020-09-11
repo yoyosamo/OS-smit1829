@@ -35,12 +35,48 @@ void addDevice(unsigned short first, unsigned short last, char* name){
   //If there's still room
   if(device_allocation_count < 16){
     //Add to the next space
-    device_memory_allocation[device_allocation_count++] = {first, last, name};
+    device_memory_allocations[device_allocation_count++] = {first, last, name};
   } else {
     print_to_screen("no more devices!");
     print_newline();
     return;
   }
+}
+
+//Print out all devices in the array
+void printDevices(){
+  for(int i = 0; i < device_allocation_count; i++){
+    //Print name
+    print_to_screen(device_memory_allocations[i].device_name);
+    print_to_screen(" at $");
+    //Start Mem
+    print_to_screen(device_memory_allocations[i].first_address);
+    print_to_screen(" to $")
+    //End mem
+    print_to_screen(device_memory_allocations[i].last_address);
+    print_newline();
+  }
+
+}
+
+//Check if the memory has already been claimed
+bool memUsed(unsigned short mem){
+
+  unsigned short first, last;
+
+  //Go through all the devices
+  for(char i = 0; i < device_allocation_count; i++){
+    //Get the first and last memory loc for each device
+    first = device_memory_allocations[i].first_address;
+    last = device_memory_allocations[i].last_address;
+    //If this one is inside the allready claimed memeory, then its taken
+    if(first <= mem && last >= mem){
+      return true;
+    }
+  }
+  //If all else fails
+  return false;
+
 }
 
 void main(){
