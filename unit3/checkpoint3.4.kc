@@ -173,19 +173,19 @@ unsigned short detect_mos6526(unsigned short mem){
 
   //Check for an hour (<23)
   time = p[$0B];
-  if(time > 23){
+  if(time > $23){
     return 0;
   }
 
   //Check for a minute
   time = p[$0A];
-  if(time > 59){
+  if(time > $59){
     return 0;
   }
 
   //It looks like a valid time
   //Check that it changes
-  v1 = p[$09];
+  v1 = p[$09]+$01;
 
   //Wait a second
   for(int i = 0; i < 63; i++){
