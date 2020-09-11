@@ -165,7 +165,7 @@ void detect_devices(){
   //Go through all of the memory, increments of 10
   for (d = $D000; d <= $DFF0; d+=$10){
     //Skip already claimed memory
-    if(memTaken(d)){
+    if(memUsed(d)){
       continue;
     }
 
@@ -179,9 +179,9 @@ void detect_devices(){
       print_newline();
       
       //Claim that memory
-      addDevice(i+$0000, i+$007F, "vicii");
-      addDevice(i+$0100, i+$03FF, "vicii");
-      addDevice(i+$0800, i+$OBFF, "vicii");
+      addDevice(d+$0000, d+$007F, "vicii");
+      addDevice(d+$0100, d+$03FF, "vicii");
+      addDevice(d+$0800, d+$0BFF, "vicii");
 
       //Advance by the size (-$10 because it adds that in the loop anyways)
       d+=(vicii - $10);
@@ -198,7 +198,7 @@ void detect_devices(){
       print_newline();
       
       //Claim that memory
-      addDevice(i+$0000, i+$00FF, "mos6526");
+      addDevice(d+$0000, d+$00FF, "mos6526");
       //Advance by the size (-$10 because it adds that in the loop anyways)
       d+=(mos6526 - $10);
     }
@@ -301,6 +301,9 @@ void myProgram(){
 
   //Run hardware test
   detect_devices();
+
+  //Print what we found
+  printDevices();
 
   print_to_screen("hardware test complete");
 
