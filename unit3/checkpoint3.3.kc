@@ -98,7 +98,7 @@ void detect_devices(){
   unsigned short d;
 
   //Go through all of the memory, increments of 10
-  for (d = $D000; i <= $DFF0; i+=$10){
+  for (d = $D000; d <= $DFF0; d+=$10){
     //If the test returns true
     if(detect_vicii(i)){
       //That must be right
