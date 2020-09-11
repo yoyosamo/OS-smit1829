@@ -128,8 +128,8 @@ void detect_devices(){
       //That must be right
       print_to_screen("mos6526 found at $");
       print_hex((unsigned short)d);
-      print_to_screen(" - $");
-      print_hex((unsigned short)d+mos6526-$1);
+      print_to_screen(" -- $");
+      print_hex((unsigned short)d+(mos6526-$1));
       print_newline();
       //Advance by the size (-$10 because it adds that in the loop anyways)
       d+=(mos6526 - $10);
