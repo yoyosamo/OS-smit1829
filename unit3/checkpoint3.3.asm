@@ -16,18 +16,19 @@
   .label current_screen_x = 4
   .label current_screen_line = 5
   .label mem_end = $13
-  .label current_screen_line_39 = 2
-  .label current_screen_line_61 = 2
-  .label current_screen_line_71 = 2
-  .label current_screen_line_72 = 2
-  .label current_screen_line_73 = 2
+  .label current_screen_line_41 = 2
+  .label current_screen_line_64 = 2
   .label current_screen_line_75 = 2
   .label current_screen_line_76 = 2
   .label current_screen_line_77 = 2
+  .label current_screen_line_78 = 2
+  .label current_screen_line_80 = 2
+  .label current_screen_line_81 = 2
   .label current_screen_line_82 = 2
-  .label current_screen_line_83 = 2
-  .label current_screen_line_84 = 2
-  .label current_screen_line_85 = 2
+  .label current_screen_line_88 = 2
+  .label current_screen_line_89 = 2
+  .label current_screen_line_90 = 2
+  .label current_screen_line_91 = 2
 .segment Code
 main: {
     rts
@@ -106,9 +107,9 @@ myProgram: {
     lda #0
     sta.z current_screen_x
     lda #<$400
-    sta.z current_screen_line_39
+    sta.z current_screen_line_41
     lda #>$400
-    sta.z current_screen_line_39+1
+    sta.z current_screen_line_41+1
     lda #<message
     sta.z print_to_screen.message
     lda #>message
@@ -120,9 +121,9 @@ myProgram: {
     sta.z current_screen_line+1
     jsr print_newline
     lda.z current_screen_line
-    sta.z current_screen_line_72
+    sta.z current_screen_line_77
     lda.z current_screen_line+1
-    sta.z current_screen_line_72+1
+    sta.z current_screen_line_77+1
     lda #0
     sta.z current_screen_x
     lda #<message1
@@ -134,9 +135,11 @@ myProgram: {
     jsr test_memory
     jsr detect_devices
     lda.z current_screen_line
-    sta.z current_screen_line_73
+    sta.z current_screen_line_78
     lda.z current_screen_line+1
-    sta.z current_screen_line_73+1
+    sta.z current_screen_line_78+1
+    lda #0
+    sta.z current_screen_x
     lda #<message2
     sta.z print_to_screen.message
     lda #>message2
@@ -166,7 +169,7 @@ print_to_screen: {
     ldy #0
     lda (message),y
     ldy.z current_screen_x
-    sta (current_screen_line_39),y
+    sta (current_screen_line_41),y
     inc.z current_screen_x
     inc.z message
     bne !+
@@ -192,18 +195,28 @@ detect_devices: {
   !:
     bcc __b2
     beq __b2
+    lda.z current_screen_line
+    sta.z current_screen_line_75
+    lda.z current_screen_line+1
+    sta.z current_screen_line_75+1
+    lda #<message
+    sta.z print_to_screen.message
+    lda #>message
+    sta.z print_to_screen.message+1
+    jsr print_to_screen
+    jsr print_newline
     rts
   __b2:
     jsr detect_vicii
     cmp #0
-    beq __b3
+    beq __b4
     lda.z current_screen_line
-    sta.z current_screen_line_71
+    sta.z current_screen_line_76
     lda.z current_screen_line+1
-    sta.z current_screen_line_71+1
-    lda #<message
+    sta.z current_screen_line_76+1
+    lda #<message1
     sta.z print_to_screen.message
-    lda #>message
+    lda #>message1
     sta.z print_to_screen.message+1
     jsr print_to_screen
     lda.z d
@@ -211,14 +224,14 @@ detect_devices: {
     lda.z d+1
     sta.z print_hex.value+1
     lda.z current_screen_line
-    sta.z current_screen_line_82
+    sta.z current_screen_line_88
     lda.z current_screen_line+1
-    sta.z current_screen_line_82+1
+    sta.z current_screen_line_88+1
     jsr print_hex
     jsr print_newline
     lda #0
     sta.z current_screen_x
-  __b3:
+  __b4:
     lda #$10
     clc
     adc.z d
@@ -228,7 +241,9 @@ detect_devices: {
   !:
     jmp __b1
   .segment Data
-    message: .text "vicii found at $"
+    message: .text "probing devices finished"
+    .byte 0
+    message1: .text "vicii found at $"
     .byte 0
 }
 .segment Code
@@ -402,27 +417,27 @@ test_memory: {
     lda.z mem+1
     sta.z mem_end+1
     lda.z current_screen_line
-    sta.z current_screen_line_77
+    sta.z current_screen_line_82
     lda.z current_screen_line+1
-    sta.z current_screen_line_77+1
+    sta.z current_screen_line_82+1
     lda #<message
     sta.z print_to_screen.message
     lda #>message
     sta.z print_to_screen.message+1
     jsr print_to_screen
     lda.z current_screen_line
-    sta.z current_screen_line_83
+    sta.z current_screen_line_89
     lda.z current_screen_line+1
-    sta.z current_screen_line_83+1
+    sta.z current_screen_line_89+1
     lda #<mem_start
     sta.z print_hex.value
     lda #>mem_start
     sta.z print_hex.value+1
     jsr print_hex
     lda.z current_screen_line
-    sta.z current_screen_line_76
+    sta.z current_screen_line_81
     lda.z current_screen_line+1
-    sta.z current_screen_line_76+1
+    sta.z current_screen_line_81+1
     lda #<message1
     sta.z print_to_screen.message
     lda #>message1
@@ -433,9 +448,9 @@ test_memory: {
     lda.z mem_end+1
     sta.z print_hex.value+1
     lda.z current_screen_line
-    sta.z current_screen_line_84
+    sta.z current_screen_line_90
     lda.z current_screen_line+1
-    sta.z current_screen_line_84+1
+    sta.z current_screen_line_90+1
     jsr print_hex
     jsr print_newline
     rts
@@ -461,9 +476,9 @@ test_memory: {
     cmp (mem),y
     beq __b6
     lda.z current_screen_line
-    sta.z current_screen_line_75
+    sta.z current_screen_line_80
     lda.z current_screen_line+1
-    sta.z current_screen_line_75+1
+    sta.z current_screen_line_80+1
     lda #<message2
     sta.z print_to_screen.message
     lda #>message2
@@ -474,9 +489,9 @@ test_memory: {
     lda.z mem+1
     sta.z print_hex.value+1
     lda.z current_screen_line
-    sta.z current_screen_line_85
+    sta.z current_screen_line_91
     lda.z current_screen_line+1
-    sta.z current_screen_line_85+1
+    sta.z current_screen_line_91+1
     jsr print_hex
     jsr print_newline
     lda #0
