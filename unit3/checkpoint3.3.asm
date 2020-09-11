@@ -15,7 +15,7 @@
   .const NOP = $ea
   .label current_screen_x = 4
   .label current_screen_line = 5
-  .label mem_end = $13
+  .label mem_end = $15
   .label current_screen_line_41 = 2
   .label current_screen_line_64 = 2
   .label current_screen_line_75 = 2
@@ -156,9 +156,9 @@ myProgram: {
     .byte 0
 }
 .segment Code
-// print_to_screen(byte* zeropage($a) message)
+// print_to_screen(byte* zeropage($c) message)
 print_to_screen: {
-    .label message = $a
+    .label message = $c
   __b1:
     ldy #0
     lda (message),y
@@ -178,7 +178,9 @@ print_to_screen: {
     jmp __b1
 }
 detect_devices: {
-    .label d = 8
+    .label __10 = 7
+    .label vicii = 7
+    .label d = $a
     lda #0
     sta.z current_screen_x
     lda #<$d000
@@ -208,8 +210,11 @@ detect_devices: {
     rts
   __b2:
     jsr detect_vicii
-    cmp #0
+    lda.z vicii
+    bne !+
+    lda.z vicii+1
     beq __b4
+  !:
     lda.z current_screen_line
     sta.z current_screen_line_76
     lda.z current_screen_line+1
@@ -229,6 +234,21 @@ detect_devices: {
     sta.z current_screen_line_88+1
     jsr print_hex
     jsr print_newline
+    lda.z __10
+    sec
+    sbc #<$10
+    sta.z __10
+    lda.z __10+1
+    sbc #>$10
+    sta.z __10+1
+    //Advance by the size (-$10 because it adds that in the loop anyways)
+    lda.z d
+    clc
+    adc.z __10
+    sta.z d
+    lda.z d+1
+    adc.z __10+1
+    sta.z d+1
     lda #0
     sta.z current_screen_x
   __b4:
@@ -258,11 +278,11 @@ print_newline: {
   !:
     rts
 }
-// print_hex(word zeropage($a) value)
+// print_hex(word zeropage($c) value)
 print_hex: {
-    .label __3 = $f
-    .label __6 = $11
-    .label value = $a
+    .label __3 = $11
+    .label __6 = $13
+    .label value = $c
     ldx #0
   __b1:
     cpx #4
@@ -335,10 +355,11 @@ print_hex: {
     hex: .fill 5, 0
 }
 .segment Code
-// detect_vicii(word zeropage(8) mem)
+// detect_vicii(word zeropage($a) mem)
 detect_vicii: {
-    .label mem = 8
-    .label i = $a
+    .label mem = $a
+    .label return = 7
+    .label i = $c
     ldy #$12
     lda (mem),y
     tax
@@ -368,10 +389,15 @@ detect_vicii: {
     cpx #$f8+1
     bcs __b5
   b1:
-    lda #0
+    lda #<0
+    sta.z return
+    sta.z return+1
     rts
   __b5:
-    lda #1
+    lda #<$80
+    sta.z return
+    lda #>$80
+    sta.z return+1
     rts
   __b3:
     inc.z i
@@ -381,9 +407,9 @@ detect_vicii: {
     jmp __b1
 }
 test_memory: {
-    .label mem = $c
-    .label q = $e
-    .label okay = 7
+    .label mem = $e
+    .label q = $10
+    .label okay = 9
     //Keep track of where we are in memory
     lda #<0
     sta.z mem
@@ -511,12 +537,12 @@ test_memory: {
 }
 .segment Code
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage($a) str, byte register(X) c, word zeropage(8) num)
+// memset(void* zeropage($c) str, byte register(X) c, word zeropage($a) num)
 memset: {
-    .label end = 8
-    .label dst = $a
-    .label num = 8
-    .label str = $a
+    .label end = $a
+    .label dst = $c
+    .label num = $a
+    .label str = $c
     lda.z num
     bne !+
     lda.z num+1
