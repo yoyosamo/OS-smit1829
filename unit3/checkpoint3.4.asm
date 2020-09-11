@@ -495,6 +495,7 @@ detect_mos6526: {
     .label return = $e
     .label i = 7
     .label j = 9
+    //Check for an hour (<23)
     ldy #$b
     lda (mem),y
     cmp #$17+1
@@ -505,6 +506,7 @@ detect_mos6526: {
     sta.z return+1
     rts
   __b1:
+    //Check for a minute
     ldy #$a
     lda (mem),y
     cmp #$3b+1
