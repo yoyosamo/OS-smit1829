@@ -94,6 +94,45 @@ void test_memory(){
 
 }
 
+void detect_devices(){
+  unsigned short d;
+
+  //Go through all of the memory, increments of 10
+  for (d = $D000; i <= $DFF0; i+=$10){
+    //If the test returns true
+    if(detect_vicii(i)){
+      //That must be right
+      print_to_screen("vicii found at $");
+      print_hex((unsigned short)d);
+      print_newline();
+    }
+  }
+
+}
+
+char detect_vicii(char mem){
+  volatile unsigned char *p = mem;
+  unsigned char v1, v2;
+
+  unsigned short i;
+  v1 = p[$12]; //Read from the memory +12
+  for(i=1; i <1000; i++) continue; //Wait
+
+  v2 = p[$12]; //Read that again
+
+  //If they're different, we must be onto something
+  if(v2 > v1){ 
+    return 1;
+  } else if (v2 < $08 && v1 > $F8){ //If v1 was close to $FF
+    return 1;
+  }
+
+  //Worst case scenario
+  return 0;
+
+
+}
+
 void myProgram(){
   //Init screen memory and font
   *VIC_MEMORY = 0x14;
