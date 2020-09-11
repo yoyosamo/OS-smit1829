@@ -99,6 +99,12 @@ void detect_devices(){
 
   //Go through all of the memory, increments of 10
   for (d = $D000; d <= $DFF0; d+=$10){
+    //Skip $D800-$DBFF, colour memory
+    if(d > $D800 && d < $DBFF){
+      continue;
+    }
+
+
     //Run the vicii test
     unsigned short vicii = detect_vicii(d);
     //If the test returns true
@@ -106,15 +112,14 @@ void detect_devices(){
       //That must be right
       print_to_screen("vicii found at $");
       print_hex((unsigned short)d);
+      print_to_screen(" - $");
+      print_hex((unsigned short)d+vicii-$1);
       print_newline();
       //Advance by the size (-$10 because it adds that in the loop anyways)
       d+=(vicii - $10);
     }
 
-    //Skip $D800-$DBFF, colour memory
-    if(d > $D800 && d < $DBFF){
-      d = $DBFF;
-    }
+    
 
     //Run the MOS6526 test
     unsigned short mos6526 = detect_mos6526(d);
@@ -123,6 +128,8 @@ void detect_devices(){
       //That must be right
       print_to_screen("mos6526 found at $");
       print_hex((unsigned short)d);
+      print_to_screen(" - $");
+      print_hex((unsigned short)d+mos6526-$1);
       print_newline();
       //Advance by the size (-$10 because it adds that in the loop anyways)
       d+=(mos6526 - $10);

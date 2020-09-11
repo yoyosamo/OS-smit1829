@@ -40,6 +40,8 @@ void myProgram(){
 
   char count = 40;
 
+  char color = 1;
+
   char i = 55;
   char j = 245;
 
@@ -48,6 +50,12 @@ void myProgram(){
 
     //Fill the screen with spaces
   memset(SCREEN, ' ', 40*25);
+
+  color++;
+
+  //Change the colour
+  const char setcol = color;
+  memset(COLS, setcol, 40*25);
 
     //Print the message
     char* sc = SCREEN+(count++);
@@ -60,7 +68,7 @@ void myProgram(){
     }
 
 
-    sleep(4000);
+    sleep(6000);
 
   }
 }

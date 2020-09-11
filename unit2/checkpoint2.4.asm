@@ -66,8 +66,9 @@ reset: {
     rts
 }
 myProgram: {
-    .label sc = 2
-    .label msg = 4
+    .label sc = 3
+    .label count = 2
+    .label msg = 5
     //Init screen memory and font
     lda #$14
     sta VIC_MEMORY
@@ -93,7 +94,9 @@ myProgram: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    ldx #$28
+    lda #$28
+    sta.z count
+    ldx #1
   //Loop forever, showing 2 lines
   __b2:
     lda #' '
@@ -107,14 +110,25 @@ myProgram: {
     lda #>$28*$19
     sta.z memset.num+1
     jsr memset
-    txa
+    inx
+    stx.z memset.c
+    lda #<COLS
+    sta.z memset.str
+    lda #>COLS
+    sta.z memset.str+1
+    lda #<$28*$19
+    sta.z memset.num
+    lda #>$28*$19
+    sta.z memset.num+1
+    jsr memset
+    lda.z count
     clc
     adc #<SCREEN
     sta.z sc
     lda #>SCREEN
     adc #0
     sta.z sc+1
-    inx
+    inc.z count
     lda #<MESSAGE
     sta.z msg
     lda #>MESSAGE
@@ -142,8 +156,8 @@ myProgram: {
     jmp __b3
 }
 sleep: {
-    .const time = $fa0
-    .label i = 4
+    .const time = $1770
+    .label i = 5
     lda #<0
     sta.z i
     sta.z i+1
@@ -169,13 +183,13 @@ sleep: {
     jmp __b1
 }
 // Copies the character c (an unsigned char) to the first num characters of the object pointed to by the argument str.
-// memset(void* zeropage(4) str, byte zeropage(6) c, word zeropage(2) num)
+// memset(void* zeropage(5) str, byte zeropage(7) c, word zeropage(3) num)
 memset: {
-    .label end = 2
-    .label dst = 4
-    .label num = 2
-    .label str = 4
-    .label c = 6
+    .label end = 3
+    .label dst = 5
+    .label c = 7
+    .label num = 3
+    .label str = 5
     lda.z num
     bne !+
     lda.z num+1
