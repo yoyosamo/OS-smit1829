@@ -339,24 +339,24 @@ detect_devices: {
     sta.z current_screen_line_90
     lda.z current_screen_line+1
     sta.z current_screen_line_90+1
-    lda #<message1
+    lda #<message2
     sta.z print_to_screen.message
-    lda #>message1
+    lda #>message2
     sta.z print_to_screen.message+1
     jsr print_to_screen
-    lda.z d
-    clc
-    adc.z mos6526
-    sta.z __28
-    lda.z d+1
-    adc.z mos6526+1
-    sta.z __28+1
-    lda.z print_hex.value
+    lda.z mos6526
     sec
     sbc #1
+    sta.z __28
+    lda.z mos6526+1
+    sbc #0
+    sta.z __28+1
+    lda.z print_hex.value
+    clc
+    adc.z d
     sta.z print_hex.value
     lda.z print_hex.value+1
-    sbc #0
+    adc.z d+1
     sta.z print_hex.value+1
     lda.z current_screen_line
     sta.z current_screen_line_107
@@ -736,6 +736,8 @@ test_memory: {
   .segment Data
     message: .text "memory found at $"
     .byte 0
+    message1: .text " - $"
+    .byte 0
     message2: .text "memory error at $"
     .byte 0
 }
@@ -1038,9 +1040,6 @@ syscall1: {
     sta SCREEN+$4f
     rts
 }
-.segment Data
-  message1: .text " - $"
-  .byte 0
 .segment Syscall
   //Fill in struct
   SYSCALLS: .byte JMP

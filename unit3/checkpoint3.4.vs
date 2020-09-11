@@ -96,11 +96,11 @@ al C:9 .return__1
 al C:86c9 .syscall45
 al C:87b8 .message2__0
 al C:87f9 .message2__1
-al C:8829 .message2__2
+al C:882e .message2__2
 al C:86c5 .syscall46
 al C:87a7 .message1__0
 al C:87e8 .message1__1
-al C:883b .message1__2
+al C:8829 .message1__2
 al C:9 .vicii
 al C:c .num
 al C:8200 .main
