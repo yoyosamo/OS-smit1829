@@ -51,7 +51,7 @@ void printDevices(){
     print_to_screen(" at $");
     //Start Mem
     print_to_screen(device_memory_allocations[i].first_address);
-    print_to_screen(" to $")
+    print_to_screen(" to $");
     //End mem
     print_to_screen(device_memory_allocations[i].last_address);
     print_newline();
