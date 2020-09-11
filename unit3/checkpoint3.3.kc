@@ -108,6 +108,8 @@ void detect_devices(){
     }
   }
 
+  print_to_screen("probing devices finished");
+  print_newline();
 }
 
 char detect_vicii(unsigned short mem){
