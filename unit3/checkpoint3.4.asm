@@ -514,10 +514,10 @@ detect_mos6526: {
     bcc __b2
     jmp b1
   __b2:
+    //It looks like a valid time
+    //Check that it changes
     ldy #9
     lda (mem),y
-    clc
-    adc #1
     sta.z v1
     lda #<0
     sta.z i
