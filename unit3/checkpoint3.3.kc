@@ -150,6 +150,9 @@ void myProgram(){
   //Run the memory test
   test_memory();
 
+  //Run hardware test
+  detect_devices();
+
   print_to_screen("hardware test complete");
 
 
