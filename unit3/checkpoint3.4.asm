@@ -15,7 +15,7 @@
   .const NOP = $ea
   .label current_screen_x = 4
   .label current_screen_line = 5
-  .label mem_end = $17
+  .label mem_end = $18
   .label current_screen_line_44 = 2
   .label current_screen_line_74 = 2
   .label current_screen_line_87 = 2
@@ -162,9 +162,9 @@ myProgram: {
     .byte 0
 }
 .segment Code
-// print_to_screen(byte* zeropage(7) message)
+// print_to_screen(byte* zeropage($e) message)
 print_to_screen: {
-    .label message = 7
+    .label message = $e
   __b1:
     ldy #0
     lda (message),y
@@ -184,13 +184,13 @@ print_to_screen: {
     jmp __b1
 }
 detect_devices: {
-    .label __15 = 7
+    .label __15 = $e
     .label __19 = 9
-    .label __28 = 7
-    .label __32 = $e
+    .label __28 = $e
+    .label __32 = 7
     .label vicii = 9
     .label d = $c
-    .label mos6526 = $e
+    .label mos6526 = 7
     lda #0
     sta.z current_screen_x
     lda #<$d000
@@ -412,11 +412,11 @@ print_newline: {
   !:
     rts
 }
-// print_hex(word zeropage(7) value)
+// print_hex(word zeropage($e) value)
 print_hex: {
     .label __3 = $13
     .label __6 = $15
-    .label value = 7
+    .label value = $e
     ldx #0
   __b1:
     cpx #4
@@ -492,9 +492,10 @@ print_hex: {
 // detect_mos6526(word zeropage($c) mem)
 detect_mos6526: {
     .label mem = $c
-    .label return = $e
-    .label i = 7
-    .label j = 9
+    .label return = 7
+    .label v1 = $17
+    .label i = 9
+    .label j = $e
     //Check for an hour (<23)
     ldy #$b
     lda (mem),y
@@ -510,29 +511,34 @@ detect_mos6526: {
     ldy #$a
     lda (mem),y
     cmp #$3b+1
-    bcc b2
+    bcc __b2
     jmp b1
-  //Wait a second
-  b2:
+  __b2:
+    ldy #9
+    lda (mem),y
+    clc
+    adc #1
+    sta.z v1
     lda #<0
     sta.z i
     sta.z i+1
-  __b2:
+  //Wait a second
+  __b3:
     lda.z i+1
-    bmi b3
+    bmi b2
     cmp #>$3f
-    bcc b3
+    bcc b2
     bne !+
     lda.z i
     cmp #<$3f
-    bcc b3
+    bcc b2
   !:
     jmp b1
-  b3:
+  b2:
     lda #<0
     sta.z j
     sta.z j+1
-  __b3:
+  __b4:
     lda.z j
     cmp #<$7d00
     lda.z j+1
@@ -540,28 +546,28 @@ detect_mos6526: {
     bvc !+
     eor #$80
   !:
-    bmi __b4
+    bmi __b5
     inc.z i
     bne !+
     inc.z i+1
   !:
-    jmp __b2
-  __b4:
+    jmp __b3
+  __b5:
     ldy #9
     lda (mem),y
-    cmp #0
-    beq __b6
+    cmp.z v1
+    bne __b7
     lda #<$100
     sta.z return
     lda #>$100
     sta.z return+1
     rts
-  __b6:
+  __b7:
     inc.z j
     bne !+
     inc.z j+1
   !:
-    jmp __b3
+    jmp __b4
 }
 // detect_vicii(word zeropage($c) mem)
 detect_vicii: {
