@@ -192,7 +192,7 @@ unsigned short detect_mos6526(unsigned short mem){
       for(int j = 0; j < 32000; j++){
         v2 = p[$09];
 
-        if(v1=v2){
+        if(v1==v2){
         return $100;
         }
       }
