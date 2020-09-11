@@ -100,7 +100,7 @@ void detect_devices(){
   //Go through all of the memory, increments of 10
   for (d = $D000; d <= $DFF0; d+=$10){
     //If the test returns true
-    if(detect_vicii(i)){
+    if(detect_vicii(d)){
       //That must be right
       print_to_screen("vicii found at $");
       print_hex((unsigned short)d);
@@ -110,7 +110,7 @@ void detect_devices(){
 
 }
 
-char detect_vicii(char mem){
+char detect_vicii(unsigned short mem){
   volatile unsigned char *p = mem;
   unsigned char v1, v2;
 
