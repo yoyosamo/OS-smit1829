@@ -14,7 +14,7 @@ al C:84f8 .b3
 al C:e .__32
 al C:400 .SCREEN
 al C:8755 .syscall10
-al C:880c .hex
+al C:8812 .hex
 al C:8745 .syscall14
 al C:2 .current_screen_line_87
 al C:8741 .syscall15
@@ -85,7 +85,7 @@ al C:86dd .syscall40
 al C:874d .securexit
 al C:86d1 .syscall43
 al C:86cd .syscall44
-al C:87f9 .message3
+al C:87ff .message3
 al C:86d9 .syscall41
 al C:2 .current_screen_line_74
 al C:86d5 .syscall42
@@ -95,11 +95,12 @@ al C:e .return__0
 al C:9 .return__1
 al C:86c9 .syscall45
 al C:87b8 .message2__0
-al C:8823 .message2__1
+al C:87f9 .message2__1
+al C:8829 .message2__2
 al C:86c5 .syscall46
 al C:87a7 .message1__0
 al C:87e8 .message1__1
-al C:8835 .message1__2
+al C:883b .message1__2
 al C:9 .vicii
 al C:c .num
 al C:8200 .main
@@ -174,6 +175,6 @@ al C:d800 .COLS
 al C:7 .message__0
 al C:8781 .message__1
 al C:87cf .message__2
-al C:8811 .message__3
+al C:8817 .message__3
 al C:17 .mem_end
 al C:820f .VF011WR

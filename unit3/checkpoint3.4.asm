@@ -268,24 +268,24 @@ detect_devices: {
     sta.z current_screen_line_89
     lda.z current_screen_line+1
     sta.z current_screen_line_89+1
-    lda #<message1
+    lda #<message2
     sta.z print_to_screen.message
-    lda #>message1
+    lda #>message2
     sta.z print_to_screen.message+1
     jsr print_to_screen
-    lda.z d
-    clc
-    adc.z vicii
-    sta.z __15
-    lda.z d+1
-    adc.z vicii+1
-    sta.z __15+1
-    lda.z print_hex.value
+    lda.z vicii
     sec
     sbc #1
+    sta.z __15
+    lda.z vicii+1
+    sbc #0
+    sta.z __15+1
+    lda.z print_hex.value
+    clc
+    adc.z d
     sta.z print_hex.value
     lda.z print_hex.value+1
-    sbc #0
+    adc.z d+1
     sta.z print_hex.value+1
     lda.z current_screen_line
     sta.z current_screen_line_105
@@ -394,6 +394,8 @@ detect_devices: {
     message: .text "probing devices finished"
     .byte 0
     message1: .text "vicii found at $"
+    .byte 0
+    message2: .text " -- $"
     .byte 0
     message3: .text "mos6526 found at $"
     .byte 0
