@@ -499,7 +499,7 @@ detect_mos6526: {
     //Check for an hour (<23)
     ldy #$b
     lda (mem),y
-    cmp #$17+1
+    cmp #$23+1
     bcc __b1
   b1:
     lda #<0
@@ -510,14 +510,14 @@ detect_mos6526: {
     //Check for a minute
     ldy #$a
     lda (mem),y
-    cmp #$3b+1
+    cmp #$59+1
     bcc __b2
     jmp b1
   __b2:
-    //It looks like a valid time
-    //Check that it changes
     ldy #9
     lda (mem),y
+    clc
+    adc #1
     sta.z v1
     lda #<0
     sta.z i
