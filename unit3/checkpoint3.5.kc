@@ -17,8 +17,31 @@ unsigned char current_screen_x = 0;
 unsigned short mem_start = $0800;
 unsigned short mem_end = $8000; 
 
-//The text to display
-char[] MESSAGE = "checkpoint 3.1 by smit1829";
+//Store the memory loc of each device
+struct device_memory_allocation{
+  unsigned short first_address;
+  unsigned short last_address;
+  char * device_name;
+};
+
+//Store the list
+struct device_memory_allocation[16] device_memory_allocations;
+
+//Count the list
+unsigned char device_allocation_count = 0;
+
+//Add a device to the list
+void addDevice(unsigned short first, unsigned short last, char* name){
+  //If there's still room
+  if(device_allocation_count < 16){
+    //Add to the next space
+    device_memory_allocation[device_allocation_count++] = {first, last, name};
+  } else {
+    print_to_screen("no more devices!");
+    print_newline();
+    return;
+  }
+}
 
 void main(){
   //Leave this here becasue KickC is weird
