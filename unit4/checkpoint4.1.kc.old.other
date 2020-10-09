@@ -11,12 +11,134 @@ const char* COLS = 0xd800;
 const char BLACK = 0;
 const char WHITE = 1;
 
+unsigned char *current_screen_line = $0400;
+unsigned char current_screen_x = 0;
+
+unsigned short mem_start = $0800;
+unsigned short mem_end = $8000; 
+
 //The text to display
-char[] MESSAGE = "checkpoint 4.1 by smit1829";
+char[] MESSAGE = "checkpoint 3.1 by smit1829";
 
 void main(){
   //Leave this here becasue KickC is weird
 }
+
+void print_to_screen(char *message){
+  while(*message){
+    *(current_screen_line + current_screen_x++) = *message++;
+  }
+}
+
+void print_newline(){
+  //Add 40 chars, for a new line
+  current_screen_line+=40;
+  //Reset the X
+  current_screen_x = 0;
+
+}
+
+void print_hex(unsigned short value){
+  char [5] hex;
+  unsigned char i;
+  for(i=0; i<4; i++){
+    if(value<0xa000) hex[i]='0'+(char) (value>>12);
+    else hex[i]=(char) (value>>12)-9;
+    value<<=4;
+  }
+  hex[4]=0;
+  print_to_screen(hex);
+}
+
+void test_memory(){
+  //Assumes its okay to start
+  bool okay = true;
+  //Keep track of where we are in memory
+  volatile unsigned char *mem;
+
+  //Keep track of the memory
+  volatile unsigned char q;
+
+  //Loop through all memory, while we're still okay
+  for(mem = mem_start; mem < mem_end && okay; mem++){
+    //For each memory location, set 0-254
+    for(q = 0; q < 255; q++){
+      //Set this location to this value
+      *mem = q;
+
+      //Check if it's right
+      //If it doesn't match the expected
+      if(*mem != q){
+        //Print the error
+        print_to_screen("memory error at $");
+        print_hex((unsigned short)mem);
+        print_newline();
+        //Set us to not okay
+        okay = false;
+        break;
+      }
+    }
+  }
+
+  //Set the end of memory
+  mem_end = (unsigned short)mem;
+
+  //Print the test results
+  print_to_screen("memory found at $");
+  print_hex((unsigned short)mem_start);
+  print_to_screen(" - $");
+  print_hex((unsigned short)mem_end);
+  print_newline();
+
+
+
+}
+
+void detect_devices(){
+  unsigned short d;
+
+  //Go through all of the memory, increments of 10
+  for (d = $D000; d <= $DFF0; d+=$10){
+    //Run the vicii test
+    unsigned short vicii = detect_vicii(d);
+    //If the test returns true
+    if(vicii > 0){
+      //That must be right
+      print_to_screen("vicii found at $");
+      print_hex((unsigned short)d);
+      print_newline();
+      //Advance by the size (-$10 because it adds that in the loop anyways)
+      d+=(vicii - $10);
+    }
+  }
+
+  print_to_screen("probing devices finished");
+  print_newline();
+}
+
+unsigned short detect_vicii(unsigned short mem){
+  volatile unsigned char *p = mem;
+  unsigned char v1, v2;
+
+  unsigned short i;
+  v1 = p[$12]; //Read from the memory +12
+  for(i=1; i <1000; i++) continue; //Wait
+
+  v2 = p[$12]; //Read that again
+
+  //If they're different, we must be onto something
+  if(v2 > v1){ 
+    return $80;
+  } else if (v2 < $08 && v1 > $F8){ //If v1 was close to $FF
+    return $80;
+  }
+
+  //Worst case scenario
+  return 0;
+
+
+}
+
 
 //Trigger the system to exit hypervisor mode
 void 	exit_hypervisor(){
@@ -315,6 +437,7 @@ void CPUKIL(){
 	exit_hypervisor();
 }
 
+
 void start_simple_program(){
   *(unsigned char *)$0300 = $80;
   *(unsigned char *)$0301 = $00;
@@ -351,13 +474,10 @@ void myProgram(){
   //Set the colour of every char to white
   memset(COLS, WHITE, 40*25);
   //Print the message
-  char* sc = SCREEN+40; //Start one line down
-  char* msg = MESSAGE;
-  //Routine to copy the string
-  while(*msg){
-    *sc++ = *msg++;
-  }
-
+  current_screen_line = $0400; //Start one line down
+  current_screen_x = 0;
+  
+  print_to_screen(MESSAGE);
 
   start_simple_program();
 }
@@ -513,3 +633,4 @@ export  align(0x100) struct SysCall[] TRAPS = {
   {JMP, &reserved_trap, NOP},
   {JMP, &CPUKIL, NOP}
 };
+
