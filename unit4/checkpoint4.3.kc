@@ -15,7 +15,7 @@ volatile unsigned char *current_screen_line;
 volatile unsigned char current_screen_x;
 
 //The text to display
-char[] MESSAGE = "checkpoint 4.2spot by smit1829";
+char[] MESSAGE = "checkpoint 4.3 by smit1829";
 
 void main(){
   //Leave this here becasue KickC is weird

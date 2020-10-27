@@ -1,0 +1,15 @@
+al C:826 .__b1__0
+al C:83e .__b1__1
+al C:886 .get_os_version
+al C:829 .string__0
+al C:4 .string__1
+al C:871 .call_syscall02
+al C:836 .print_string
+al C:88a .call_syscall03
+al C:2 .i
+al C:80b .upstartEnd
+al C:80d .main
+al C:87b .enable_syscalls
+al C:85c .__b2
+al C:853 .__b3
+al C:300 .return

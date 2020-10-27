@@ -1,4 +1,4 @@
-  .file [name="checkpoint4.2.bin", type="bin", segments="XMega65Bin"]
+  .file [name="checkpoint4.5.bin", type="bin", segments="XMega65Bin"]
 .segmentdef XMega65Bin [segments="Syscall, Code, Data, Stack, Zeropage"]
 .segmentdef Syscall [start=$8000, max=$81ff]
 .segmentdef Code [start=$8200, min=$8200, max=$bdff]
@@ -467,11 +467,46 @@ syscall5: {
     rts
 }
 syscall4: {
+    .label targ = $d
+    .label src = $b
+    lda #<$300
+    sta.z targ
+    lda #>$300
+    sta.z targ+1
+    lda #<OSVER
+    sta.z src
+    lda #>OSVER
+    sta.z src+1
+  __b1:
+    ldy #0
+    lda (src),y
+    cmp #0
+    bne __b2
     jsr exit_hypervisor
     rts
+  __b2:
+    ldy #0
+    lda (src),y
+    sta (targ),y
+    inc.z targ
+    bne !+
+    inc.z targ+1
+  !:
+    inc.z src
+    bne !+
+    inc.z src+1
+  !:
+    jmp __b1
 }
 //The rest of the SYSCALL handler functions
 syscall3: {
+    //Print the message when we need to
+    .label msg = $300
+    lda #<msg
+    sta.z print_to_screen.message
+    lda #>msg
+    sta.z print_to_screen.message+1
+    jsr print_to_screen
     jsr exit_hypervisor
     rts
 }
@@ -505,7 +540,9 @@ syscall1: {
     .byte 0
 }
   //The text to display
-  MESSAGE: .text "checkpoint 4.1 by smit1829"
+  MESSAGE: .text "checkpoint 4.3 by smit1829"
+  .byte 0
+  OSVER: .text "smitos v0.1"
   .byte 0
 .segment Syscall
   //Fill in struct

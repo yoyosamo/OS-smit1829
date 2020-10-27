@@ -1,4 +1,4 @@
-  .file [name="checkpoint4.2.bin", type="bin", segments="XMega65Bin"]
+  .file [name="checkpoint4.3.bin", type="bin", segments="XMega65Bin"]
 .segmentdef XMega65Bin [segments="Syscall, Code, Data, Stack, Zeropage"]
 .segmentdef Syscall [start=$8000, max=$81ff]
 .segmentdef Code [start=$8200, min=$8200, max=$bdff]
@@ -505,7 +505,7 @@ syscall1: {
     .byte 0
 }
   //The text to display
-  MESSAGE: .text "checkpoint 4.1 by smit1829"
+  MESSAGE: .text "checkpoint 4.3 by smit1829"
   .byte 0
 .segment Syscall
   //Fill in struct

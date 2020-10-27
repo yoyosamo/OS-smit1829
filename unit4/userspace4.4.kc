@@ -1,0 +1,8 @@
+import "myabi"
+
+void main(){
+    
+    print_string("printed via printstring api");
+    while(true) continue;
+
+}

@@ -1,0 +1,12 @@
+al C:87c .enable_syscalls
+al C:810 .__b1__0
+al C:83f .__b1__1
+al C:813 .string__0
+al C:4 .string__1
+al C:872 .call_syscall02
+al C:82f .print_string
+al C:2 .i
+al C:80b .upstartEnd
+al C:80d .main
+al C:85d .__b2
+al C:854 .__b3

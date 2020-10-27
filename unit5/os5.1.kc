@@ -1,73 +1,143 @@
+// XMega65 Kernal Development Template
+// Each function of the kernal is a no-args function
+// The functions are placed in the SYSCALLS table surrounded by JMP and NOP
+
+#pragma cpu(rom6502)
+
 import "string"
 
 #pragma link("mega65hyper.ld")
 
-//Definitions
+
 const char* RASTER = 0xd012;
 const char* VIC_MEMORY = 0xd018;
 const char* SCREEN = 0x0400;
 const char* BGCOL = 0xd021;
 const char* COLS = 0xd800;
 const char BLACK = 0;
+const char BLUE = 6;
 const char WHITE = 1;
 
-volatile unsigned char *current_screen_line;
-volatile unsigned char current_screen_x;
+char[] MESSAGE = "checkpoint 5.1";
 
-//The text to display
-char[] MESSAGE = "checkpoint 4.2spot by smit1829";
+const unsigned char STATE_NOTRUNNING = $00;
+const unsigned char STATE_RUNNING = $01;
 
-void main(){
-  //Leave this here becasue KickC is weird
+// Process Descriptor Block definition
+struct process_descriptor_block {
+  // Unique identifier for the process
+  XXX - You need to add something here
+
+  // Current state of the process
+  XXX - You need to add something here
+
+  // Human readable name of the process
+  XXX - You need to add something here
+  
+  // Where this process is stored when not running
+  // i.e., where in the $20000-$5FFFF memory range the
+  // process is stored when not running.
+  XXX - You need to add something here
+  XXX - You need to add something here
+ 
+  // Stored registers and related machine state for this
+  // process (for the $D640-$D67E machine state registers)
+  XXX - You need to add something here
+  
+};
+
+// Process stored state will live at $C000-$C7FF, with 256 bytes
+// for each process reserved
+const unsigned char *stored_pdbs = $C000;
+// 8 processes x 16 bytes = 128 bytes for names
+const char *process_names = $C800;
+// 8 processes x 64 bytes context state = 512 bytes
+const unsigned char *process_context_states = $C900;
+
+
+volatile unsigned char *current_screen_line = SCREEN;
+volatile unsigned char current_screen_x = 0;
+
+void print_char(char c)
+{
+   current_screen_line[current_screen_x++]=c;
 }
 
-void print_to_screen(char *message){
-  while(*message){
-    *(current_screen_line + current_screen_x++) = *message++;
+void print_to_screen(char *message)
+{
+  char *c=message;
+  while(*c) {
+    current_screen_line[current_screen_x++]=*c;
+    c++;
   }
 }
 
-void print_newline(){
-  //Add 40 chars, for a new line
+void print_newline()
+{
   current_screen_line+=40;
-  //Reset the X
-  current_screen_x = 0;
+  current_screen_x=0;
+}
+
+
+void print_hex(unsigned word value)
+{
+  char[5] hex;
+  unsigned char i;
+  for(i=0;i<8;i++) {
+    if (value<0xa000) hex[i]='0'+(char)(value>>12);
+    else hex[i]=(char)(value>>12)-9;
+    value<<=4;
+  }
+  hex[4]=0;
+  print_to_screen(hex);
+}
+
+void print_dhex(unsigned dword value)
+{
+  print_hex((word)(value>>16));
+  print_hex((unsigned word)value);
+}
+
+void describe_pdb(unsigned char pdb_number)
+{
+  unsigned char i;
+  struct process_descriptor_block *p
+    =(struct process_descriptor_block *)(((unsigned short)stored_pdbs)+(((unsigned short)pdb_number)<<8));
+
+  print_to_screen("pdb#");
+  print_hex((word)pdb_number);
+  print_to_screen(":");
+  print_newline();
+
+  print_to_screen("  pid:          ");
+  print_hex((word)p->process_id);
+  print_newline();
+
+  print_to_screen("  process name: ");
+  char *n=p->process_name;
+  for(i=0;n[i]&&(i<17);i++) {
+    print_char(n[i]);
+  }
+  print_newline();
+
+  print_to_screen("  mem start:    $");
+  print_dhex(p->storage_start_address);
+  print_newline();
+
+  print_to_screen("  mem end:      $");
+  print_dhex(p->storage_end_address);
+  print_newline();
+
+  print_to_screen("  pc:           $");
+  unsigned short *ss=p->stored_state;
+  print_hex(ss[4]);
+  print_newline();
+
 
 }
 
-void start_simple_program(){
-  *(unsigned char *)$0300 = $80;
-  *(unsigned char *)$0301 = $00;
-  *(unsigned char *)$0302 = $81;
-  *(unsigned char *)$0303 = $00;
-  *(unsigned char *)$0304 = $00;
-  *(unsigned char *)$0305 = $00;
-  *(unsigned char *)$0306 = $00;
-  *(unsigned char *)$0307 = $60;
-  *(unsigned char *)$0308 = $02;
-  *(unsigned char *)$0309 = $00;
-  *(unsigned char *)$030A = $02;
-  *(unsigned char *)$030B = $01;
-  *(unsigned char *)$030C = $08;
-  *(unsigned char *)$030D = $00;
-  *(unsigned char *)$030E = $00;
-  *(unsigned char *)$030F = $00;
-  *(unsigned char *)$0310 = $60;
-  *(unsigned char *)$D701 = $03;
-  *(unsigned char *)$D702 = $00;
-  *(unsigned char *)$D705 = $00;
-
-  *(unsigned short *)$D648 = $080D;
-
-  exit_hypervisor();
-
-}
 
 void myProgram(){
-  //Reset screen
-  current_screen_line = $0400;
-  current_screen_x = 0;
-
   //Init screen memory and font
   *VIC_MEMORY = 0x14;
   //Fill the screen with spaces
@@ -75,12 +145,27 @@ void myProgram(){
   //Set the colour of every char to white
   memset(COLS, WHITE, 40*25);
   //Print the message
+  char* sc = SCREEN+40; //Start one line down
+  char* msg = MESSAGE;
+  //Routine to copy the string
+  while(*msg){
+    *sc++ = *msg++;
+  }
+  current_screen_line = SCREEN;
+    print_newline();
+    print_newline();
+    print_newline();
 
-  print_to_screen(MESSAGE);
-  print_newline();
+    describe_pdb(0);
 
-
-  start_simple_program();
+  //Loop forever, showing 2 white lines
+  while(true){
+    if(*RASTER==54 || *RASTER==66){
+      *BGCOL = WHITE;
+    } else {
+      *BGCOL = BLACK;
+    }
+  }
 }
 
 
@@ -90,21 +175,15 @@ void 	exit_hypervisor(){
 }
 
 //SYSCALL Handlers to display a character
-//I think in numbered them weird, so just zero index them pls
 void syscall1(){
-  print_to_screen("syscall00 entered");
-  print_newline();
-  exit_hypervisor();
+  *(SCREEN+79) = ')';
 }
 
 void syscall2(){
-  print_to_screen("syscall01 entered");
-  print_newline();
-  exit_hypervisor();
+  *(SCREEN+78) = '(';
 }
 
 //The rest of the SYSCALL handler functions
-
 void syscall3(){
 	exit_hypervisor();
 }
@@ -387,7 +466,6 @@ void CPUKIL(){
 	exit_hypervisor();
 }
 
-
 //Select the SYSCALL segment
 #pragma data_seg(Syscall)
 
@@ -539,3 +617,4 @@ export  align(0x100) struct SysCall[] TRAPS = {
   {JMP, &reserved_trap, NOP},
   {JMP, &CPUKIL, NOP}
 };
+    

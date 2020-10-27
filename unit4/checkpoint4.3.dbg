@@ -1,7 +1,7 @@
 <C64debugger version="1.0">
    <Sources values="INDEX,FILE">
       0,KickAss.jar:/include/autoinclude.asm
-      1,/home/student/repo/unit4/checkpoint4.2.asm
+      1,/home/student/repo/unit4/checkpoint4.3.asm
    </Sources>
 
    <Segment name="Default" dest="" values="START,END,FILE_IDX,LINE1,COL1,LINE2,COL2">

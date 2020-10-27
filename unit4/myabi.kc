@@ -1,0 +1,50 @@
+void print_string(char * string){
+    char * i = $0300;
+    while(*string && i < $03FF){
+        *i++ = *string++;
+    }
+    *i = 0;
+    call_syscall02();
+}
+
+char * get_os_version(){
+    call_syscall03();
+    //return from shared mem
+    return $0300;
+}
+
+
+void enable_syscalls(){
+    //Tells the MEGA65 to allow system calls to be made 
+    *(unsigned char *)$D02F = $47;
+    *(unsigned char *)$D02F = $53;
+
+}
+
+void call_syscall00(){
+    enable_syscalls(); //Let us make a syscall
+    *(unsigned char *)$D640 = $00; //Write here to trigger syscall 00
+    asm { nop } //Do nothing
+
+}
+
+void call_syscall01(){
+    enable_syscalls(); //Let us make a syscall
+    *(unsigned char *)$D641 = $00; //Write here to trigger syscall 01
+    asm { nop } //Do nothing
+
+}
+
+//Print a message to the screen
+void call_syscall02(){
+    enable_syscalls();
+    *(unsigned char *)$D642 = $00;
+    asm { nop }
+}
+
+
+void call_syscall03(){
+    enable_syscalls();
+    *(unsigned char *)$D643 = $00;
+    asm { nop }
+}

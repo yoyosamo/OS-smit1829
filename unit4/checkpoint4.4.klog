@@ -3,8 +3,8 @@ flex pass 1
 flex pass 2
 flex pass 3
 Output pass
-Writing prg file: checkpoint4.2.bin
-Writing prg file: /home/student/repo/unit4/checkpoint4.2.prg
+Writing prg file: checkpoint4.4.bin
+Writing prg file: /home/student/repo/unit4/checkpoint4.4.prg
 
 Memory Map
 ----------
@@ -17,13 +17,13 @@ Syscall-segment:
   $8000-$81ff Syscall
 
 Code-segment:
-  $8200-$8451 Code
+  $8200-$845f Code
 
 Data-segment:
-  $8452-$8490 Data
+  $8460-$849e Data
 
 Stack-segment:
 
 Zeropage-segment:
 
-Writing Vice symbol file: /home/student/repo/unit4/checkpoint4.2.vs
+Writing Vice symbol file: /home/student/repo/unit4/checkpoint4.4.vs
